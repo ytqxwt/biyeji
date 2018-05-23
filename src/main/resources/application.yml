@@ -6,7 +6,7 @@ spring:
       enabled: false
   datasource:
     username: root
-    data-password: dyz13125219151YT
+    data-password:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://120.79.68.208:3306/fi?useUnicode=true&characterEncoding=utf-8&useSSL=false
