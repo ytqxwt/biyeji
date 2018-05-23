@@ -12,4 +12,12 @@ public class RouterController {
     public String login() {
         return "chat";
     }
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String index() {
+        return "index";
+    }
+    @RequestMapping(value = "ueditor", method = RequestMethod.GET)
+    public String uEditor() {
+        return "ueditor";
+    }
 }

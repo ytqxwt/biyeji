@@ -24,6 +24,7 @@ public class MessageEventHandler {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         if (client != null) {
+            client.joinRoom("room");
             //String imei = client.getHandshakeData().getSingleUrlParam("imei");
            // String applicationId = client.getHandshakeData().getSingleUrlParam("appid");
             System.out.println("连接成功" );
@@ -35,7 +36,6 @@ public class MessageEventHandler {
     //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
-       // String imei = client.getHandshakeData().getSingleUrlParam("imei");
         System.out.println("客户端断开连接");
         client.disconnect();
     }
@@ -43,14 +43,25 @@ public class MessageEventHandler {
     //消息接收入口
     @OnEvent(value = Socket.EVENT_MESSAGE)
     public void onEvent(SocketIOClient client, AckRequest ackRequest, Object data) {
-        client.joinRoom("room");
         System.out.println("接收到客户端消息");
         if (ackRequest.isAckRequested()) {
             // send ack response with data to client
             ackRequest.sendAckData("服务器回答Socket.EVENT_MESSAGE", "好的");
         }
     }
+    //聊天
+    @OnEvent(value = "chat message")
+    public void chat(SocketIOClient client, AckRequest ackRequest, Object data) {
+        System.out.println(data);
+        if(client.getAllRooms().contains("room")){
+            System.out.println("进入聊天室");
+            if (ackRequest.isAckRequested()) {
+                // send ack response with data to client
+                ackRequest.sendAckData("hello",client.get("hello"));
+            }
+        }
 
+    }
     // 广播消息接收入口
     @OnEvent(value = "broadcast")
     public void onBroadcast(SocketIOClient client, AckRequest ackRequest, Object data) {

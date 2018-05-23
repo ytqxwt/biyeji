@@ -1,5 +1,7 @@
 package cn.jxustsrw.biyeji.util;
 
+import cn.jxustsrw.biyeji.doMain.bean.UEditorReturn;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +28,7 @@ public class FileUtil {
             if (fileName != null) {
                 suffix = fileName.substring(fileName.lastIndexOf('.') + 1);
             }
-            File path = new File("/FaceIn/" + suffix + "/" + simpleFormatter.format(new Date()) + "/");
+            File path = new File("/biyeji/" + suffix + "/" + simpleFormatter.format(new Date()) + "/");
             if (!path.exists()) path.mkdirs();
             try (BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(new File(path, file.getOriginalFilename())))) {
@@ -46,28 +48,24 @@ public class FileUtil {
         return result;
     }
 
-    public Map imageUpload(String image, String fileName) throws IOException {
-        Map<String, Object> result = new HashMap<>();
-        DateFormat simpleFormatter = new SimpleDateFormat("yyyyMMdd");
-        if (!image.isEmpty()) {
-            String suffix = fileName.substring(fileName.lastIndexOf('.') + 1);//后缀
-            File path = new File("/FaceIn/" + suffix + "/" + simpleFormatter.format(new Date()) + "/");
+    public Boolean imageUpload(String uri, MultipartFile file) throws IOException {
+        UEditorReturn uEditorReturn = new UEditorReturn();
+        String fileName = file.getOriginalFilename();
+        if (!file.isEmpty()) {
+            File path = new File(uri);
             if (!path.exists()) path.mkdirs();
             try (BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(new File(path, fileName)))) {
-                out.write(image.getBytes(Charset.forName("UTF-8")));
+                out.write(file.getBytes());
                 out.flush();
-                result.put("result", true);
-                result.put("uri", path + "/" + fileName);
+                uEditorReturn.setState(UEditorReturn.State.SUCCESS);
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
-                result.put("result", false);
-                result.put("massage", e.getMessage());
             }
         } else {
-            result.put("result", false);
-            result.put("massage", "file is null");
+            return false;
         }
-        return result;
+        return false;
     }
 }

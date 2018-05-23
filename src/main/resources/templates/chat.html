@@ -49,7 +49,7 @@
             background: #eee;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <script src="js/socket.io.js"></script>
     <script>
         var socket = io("http://localhost:9000/");
         io.on('connection', function (socket) {
@@ -58,12 +58,22 @@
                 console.log('user disconnected');
             });
         });
+        $(function () {
+            var socket = io();
+            $('form').submit(function(){
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+            });
+        });
     </script>
 </head>
 <body>
-hello
 <ul id="messages"></ul>
-<form action="">
+<form>
     <label for="m"></label><input id="m" autocomplete="off"/>
     <button>Send</button>
 </form>

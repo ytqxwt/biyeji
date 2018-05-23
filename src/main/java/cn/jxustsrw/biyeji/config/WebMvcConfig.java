@@ -14,20 +14,18 @@ import java.util.List;
 class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/static/js/");
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("classpath:/static/img/");
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/fonts/**")
                 .addResourceLocations("classpath:/static/fonts/");
-        registry.addResourceHandler("/font-awesome/**")
-                .addResourceLocations("classpath:/static/font-awesome/");
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/");
-        registry.addResourceHandler("/email_templates/**")
-                .addResourceLocations("classpath:/static/email_templates/");
+        registry.addResourceHandler("/ueditor/**")
+                .addResourceLocations("classpath:/static/ueditor/");
+        registry.addResourceHandler("/favicon.ico")
+                .addResourceLocations("classpath:/static/favicon.ico");
     }
 
     //处理controller返回json中文乱码问题
